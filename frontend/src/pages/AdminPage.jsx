@@ -30,9 +30,9 @@ export default function AdminPage() {
     try {
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       const [uRes, cRes, lRes] = await Promise.all([
-        fetch('http://127.0.0.1:8000/api/auth/manage/users/', { headers }),
-        fetch('http://127.0.0.1:8000/api/cases/', { headers }),
-        fetch('http://127.0.0.1:8000/api/auth/admin/activity-logs/?limit=100', { headers }),
+        fetch('${API_URL}/api/auth/manage/users/', { headers }),
+        fetch('${API_URL}/api/cases/', { headers }),
+        fetch('${API_URL}/api/auth/admin/activity-logs/?limit=100', { headers }),
       ]);
       if (!uRes.ok || !cRes.ok || !lRes.ok) throw new Error('Failed to load admin data');
       const [uData, cData, lData] = await Promise.all([uRes.json(), cRes.json(), lRes.json()]);
@@ -53,7 +53,7 @@ export default function AdminPage() {
     setCreatingUser(true);
     const token = localStorage.getItem('access_token') || '';
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/auth/manage/users/', {
+      const res = await fetch('${API_URL}/api/auth/manage/users/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify(newUser),
@@ -66,7 +66,7 @@ export default function AdminPage() {
 
   async function updateUserRole(id, role) {
     const token = localStorage.getItem('access_token') || '';
-    await fetch(`http://127.0.0.1:8000/api/auth/manage/users/${id}/`, {
+    await fetch(`${API_URL}/api/auth/manage/users/${id}/`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: JSON.stringify({ role }),
@@ -77,7 +77,7 @@ export default function AdminPage() {
   async function deleteUser(id) {
     if (!window.confirm('Delete this user?')) return;
     const token = localStorage.getItem('access_token') || '';
-    await fetch(`http://127.0.0.1:8000/api/auth/manage/users/${id}/`, {
+    await fetch(`${API_URL}/api/auth/manage/users/${id}/`, {
       method: 'DELETE',
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
@@ -86,7 +86,7 @@ export default function AdminPage() {
 
   async function approveCase(id) {
     const token = localStorage.getItem('access_token') || '';
-    await fetch(`http://127.0.0.1:8000/api/cases/${id}/approve/`, {
+    await fetch(`${API_URL}/api/cases/${id}/approve/`, {
       method: 'POST',
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
@@ -96,7 +96,7 @@ export default function AdminPage() {
   async function deleteCase(id) {
     if (!window.confirm('Delete this case?')) return;
     const token = localStorage.getItem('access_token') || '';
-    await fetch(`http://127.0.0.1:8000/api/cases/${id}/`, {
+    await fetch(`${API_URL}/api/cases/${id}/`, {
       method: 'DELETE',
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
@@ -233,3 +233,4 @@ export default function AdminPage() {
     </div>
   );
 }
+

@@ -23,7 +23,7 @@ export default function CaseDetails() {
       setError(null);
       try {
         const token = localStorage.getItem('access_token') || ''
-        const res = await fetch(`http://127.0.0.1:8000/api/cases/${id}/`, {
+        const res = await fetch(`${API_URL}/api/cases/${id}/`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         if (res.status === 401) {
@@ -772,3 +772,4 @@ export default function CaseDetails() {
     </div>
   );
 }
+

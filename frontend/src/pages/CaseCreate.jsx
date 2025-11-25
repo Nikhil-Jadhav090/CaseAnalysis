@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { API_ENDPOINTS } from '../config';
 import { 
   FileText, AlertCircle, Scale, Camera, Users, 
   UserCheck, Shield, ChevronRight, CheckCircle, 
@@ -176,7 +177,7 @@ export default function CaseCreate() {
       };
 
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/cases/',
+        API_ENDPOINTS.cases,
         caseData,
         { headers: token ? { Authorization: `Bearer ${token}` } : {} }
       );
@@ -803,3 +804,4 @@ export default function CaseCreate() {
     </div>
   );
 }
+

@@ -25,7 +25,7 @@ export default function ChatAssistant(){
     const access = localStorage.getItem('access_token')
     if (!access) {
       setMessages([
-        { from: 'bot', text: '⚠️ Note: Chat requires backend API integration with JWT authentication. Backend is running at http://127.0.0.1:8000. To use this fully, log in with real credentials that authenticate against the backend API. For now, you can test the UI.' }
+        { from: 'bot', text: '⚠️ Note: Chat requires backend API integration with JWT authentication. Backend is running at ${API_URL}. To use this fully, log in with real credentials that authenticate against the backend API. For now, you can test the UI.' }
       ])
       return
     }
@@ -33,7 +33,7 @@ export default function ChatAssistant(){
     // create a chat session on the backend
     ;(async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/chat/sessions/', {
+        const res = await fetch('${API_URL}/api/chat/sessions/', {
           method: 'POST',
           headers: { Authorization: `Bearer ${access}` },
         })
@@ -43,7 +43,7 @@ export default function ChatAssistant(){
         setMessages([{ from: 'bot', text: 'Chat session initialized. You can now ask about your case.' }])
       } catch (err) {
         console.warn('Could not initialize chat session:', err)
-        setMessages([{ from: 'bot', text: '⚠️ Note: Chat requires backend API integration with JWT authentication. Backend is running at http://127.0.0.1:8000. To use this fully, log in with real credentials that authenticate against the backend API. For now, you can test the UI.' }])
+        setMessages([{ from: 'bot', text: '⚠️ Note: Chat requires backend API integration with JWT authentication. Backend is running at ${API_URL}. To use this fully, log in with real credentials that authenticate against the backend API. For now, you can test the UI.' }])
       }
     })()
   }, [])
@@ -96,7 +96,7 @@ export default function ChatAssistant(){
       // Ensure we have a session
       let sid = sessionId
       if (!sid) {
-        const create = await fetch('http://127.0.0.1:8000/api/chat/sessions/', {
+        const create = await fetch('${API_URL}/api/chat/sessions/', {
           method: 'POST',
           headers: { Authorization: `Bearer ${access}` },
         })
@@ -121,7 +121,7 @@ export default function ChatAssistant(){
         }
       })
 
-      const res = await fetch(`http://127.0.0.1:8000/api/chat/sessions/${sid}/messages/`, {
+      const res = await fetch(`${API_URL}/api/chat/sessions/${sid}/messages/`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${access}` },
         body: form,
@@ -299,3 +299,4 @@ export default function ChatAssistant(){
     </div>
   )
 }
+

@@ -25,7 +25,7 @@ export default function CaseAnalysis() {
       setError(null)
       try {
         const token = localStorage.getItem('access_token') || ''
-        const res = await fetch('http://127.0.0.1:8000/api/cases/', {
+        const res = await fetch('${API_URL}/api/cases/', {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         })
         if (res.status === 401) {
@@ -75,7 +75,7 @@ export default function CaseAnalysis() {
     setError(null)
     try {
       const token = localStorage.getItem('access_token') || ''
-      const res = await fetch(`http://127.0.0.1:8000/api/cases/${id}/analyze/`, {
+      const res = await fetch(`${API_URL}/api/cases/${id}/analyze/`, {
         method: 'POST',
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -267,3 +267,4 @@ export default function CaseAnalysis() {
     </div>
   )
 }
+
