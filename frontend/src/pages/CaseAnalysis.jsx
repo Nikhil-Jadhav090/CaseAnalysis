@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
+import { API_URL } from '../config'
 import { Search, Sparkles, Plus, FolderOpen, Play } from 'lucide-react'
 
 export default function CaseAnalysis() {

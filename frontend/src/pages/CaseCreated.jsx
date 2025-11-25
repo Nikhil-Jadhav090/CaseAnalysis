@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { API_URL } from '../config'
 
 export default function CaseCreated() {
   const { id } = useParams()

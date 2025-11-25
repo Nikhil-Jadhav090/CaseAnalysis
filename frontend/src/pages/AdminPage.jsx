@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config';
 import { Shield, Users, FolderOpen, Activity, Clock, Database, Plus, Trash2, CheckCircle, RefreshCw } from 'lucide-react';
 import TabGroup from '../components/TabGroup';
 import TabPanel from '../components/TabPanel';

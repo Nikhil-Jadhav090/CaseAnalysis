@@ -1,4 +1,5 @@
 import { useAuth } from '../context/AuthContext'
+import { API_URL } from '../config'
 import { Shield, Users, FolderOpen, Activity, Trash2, CheckCircle, RefreshCw, Clock, Database, Plus } from 'lucide-react'
 
 export default function AdminDashboard(){

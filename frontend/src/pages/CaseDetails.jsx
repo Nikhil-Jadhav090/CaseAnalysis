@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from '../config';
 import { 
   Scale, Shield, FileText, AlertTriangle, BookOpen, 
   DollarSign, BarChart3, CheckCircle, XCircle, Phone,

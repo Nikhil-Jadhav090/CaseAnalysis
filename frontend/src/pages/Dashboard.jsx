@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { TrendingUp, FolderOpen, CheckCircle, Activity, Plus, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { API_URL } from '../config'
 
 export default function Dashboard(){
   const navigate = useNavigate()
@@ -16,7 +17,7 @@ export default function Dashboard(){
       setError(null)
       try {
         const token = localStorage.getItem('access_token')
-        const res = await fetch('${API_URL}/api/cases/', {
+        const res = await fetch(`${API_URL}/api/cases/`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {}
         })
         if (!res.ok) throw new Error(`Failed to load cases (${res.status})`)
