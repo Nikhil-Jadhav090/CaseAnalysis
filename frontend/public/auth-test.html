@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Test - Registration & Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0,123,255,0.5);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        .success {
+            color: #155724;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        hr {
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Auth Test Dashboard</h1>
+        <p>Test registration and login with console output visible below</p>
+
+        <!-- Registration Section -->
+        <div class="section">
+            <h2>📝 Registration</h2>
+            <div class="form-group">
+                <label>Full Name:</label>
+                <input type="text" id="regName" placeholder="John Doe" value="Test User">
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="regEmail" placeholder="user@example.com">
+                <small id="emailHint" style="color: #666; display: block; margin-top: 5px;"></small>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="regPassword" placeholder="TestPassword123" value="TestPassword123">
+            </div>
+            <div class="form-group">
+                <label>Confirm Password:</label>
+                <input type="password" id="regPassword2" placeholder="TestPassword123" value="TestPassword123">
+            </div>
+            <div class="form-group">
+                <label>Role:</label>
+                <select id="regRole">
+                    <option value="user">User</option>
+                    <option value="analyst">Analyst</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <button onclick="register()">Register</button>
+            <div class="error" id="regError"></div>
+            <div class="success" id="regSuccess"></div>
+            <div class="output" id="regOutput" style="display: none;"></div>
+        </div>
+
+        <hr>
+
+        <!-- Login Section -->
+        <div class="section">
+            <h2>🔑 Login</h2>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="loginEmail" placeholder="user@example.com">
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="loginPassword" placeholder="TestPassword123" value="TestPassword123">
+            </div>
+            <div class="form-group">
+                <label>Role:</label>
+                <select id="loginRole">
+                    <option value="user">User</option>
+                    <option value="analyst">Analyst</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <button onclick="login()">Login</button>
+            <div class="error" id="loginError"></div>
+            <div class="success" id="loginSuccess"></div>
+            <div class="output" id="loginOutput" style="display: none;"></div>
+        </div>
+
+        <hr>
+
+        <!-- Test Profile Section -->
+        <div class="section">
+            <h2>👤 Get Profile (needs login first)</h2>
+            <button onclick="getProfile()">Fetch Profile</button>
+            <div class="error" id="profileError"></div>
+            <div class="success" id="profileSuccess"></div>
+            <div class="output" id="profileOutput" style="display: none;"></div>
+        </div>
+
+        <hr>
+
+        <!-- Stored Data -->
+        <div class="section">
+            <h2>💾 Stored Data</h2>
+            <button onclick="showStoredData()">Show Stored Data</button>
+            <div class="output" id="storedData" style="display: none;"></div>
+        </div>
+
+        <hr>
+
+        <!-- Clear Data -->
+        <div class="section">
+            <button onclick="clearLocalStorage()" style="background: #dc3545;">Clear All Stored Data</button>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:8000/api';
+
+        function log(message) {
+            console.log(message);
+        }
+
+        function updateEmailHint() {
+            const email = document.getElementById('regEmail').value;
+            const hint = document.getElementById('emailHint');
+            if (!email) {
+                hint.textContent = '';
+            } else {
+                hint.textContent = `Will create account with: ${email}`;
+            }
+        }
+
+        document.getElementById('regEmail').addEventListener('input', updateEmailHint);
+
+        async function register() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const password2 = document.getElementById('regPassword2').value;
+            const role = document.getElementById('regRole').value;
+
+            document.getElementById('regError').style.display = 'none';
+            document.getElementById('regSuccess').style.display = 'none';
+            document.getElementById('regOutput').style.display = 'block';
+            document.getElementById('regOutput').textContent = 'Registering...';
+
+            log('[REGISTER] Form submission with:', { name, email, role });
+
+            try {
+                if (!name || !email || !password) {
+                    throw new Error('Please fill in all fields');
+                }
+                if (password !== password2) {
+                    throw new Error("Passwords don't match");
+                }
+
+                const [first_name, ...rest] = name.split(' ');
+                const last_name = rest.join(' ') || '';
+
+                const payload = {
+                    email,
+                    password,
+                    password2,
+                    first_name,
+                    last_name,
+                    role,
+                };
+
+                log('[REGISTER] Sending payload:', payload);
+                document.getElementById('regOutput').textContent = `Sending: ${JSON.stringify(payload, null, 2)}\n\nWaiting for response...`;
+
+                const response = await fetch(`${API_BASE}/auth/register/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                log('[REGISTER] Response status:', response.status);
+                const data = await response.json();
+                log('[REGISTER] Response data:', data);
+
+                if (!response.ok) {
+                    throw new Error(JSON.stringify(data));
+                }
+
+                document.getElementById('regSuccess').textContent = `✅ Registration successful! Email: ${email}\n\nNow auto-logging in...`;
+                document.getElementById('regSuccess').style.display = 'block';
+                document.getElementById('regOutput').textContent = `✅ REGISTERED\nUser: ${email}\n\n${JSON.stringify(data, null, 2)}\n\nLogging in automatically...`;
+
+                // Auto-login
+                await login();
+
+            } catch (error) {
+                log('[REGISTER] Error:', error.message);
+                document.getElementById('regError').textContent = `❌ ${error.message}`;
+                document.getElementById('regError').style.display = 'block';
+                document.getElementById('regOutput').textContent = `❌ ERROR\n${error.message}`;
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById('loginEmail').value || document.getElementById('regEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const role = document.getElementById('loginRole').value;
+
+            document.getElementById('loginEmail').value = email;
+
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginSuccess').style.display = 'none';
+            document.getElementById('loginOutput').style.display = 'block';
+            document.getElementById('loginOutput').textContent = 'Logging in...';
+
+            log('[LOGIN] Attempting login with:', { email, role });
+
+            try {
+                if (!email || !password) {
+                    throw new Error('Please fill in all fields');
+                }
+
+                const payload = { email, password };
+                log('[LOGIN] Sending payload:', payload);
+                document.getElementById('loginOutput').textContent = `Sending: ${JSON.stringify(payload, null, 2)}\n\nWaiting for response...`;
+
+                const response = await fetch(`${API_BASE}/auth/login/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                log('[LOGIN] Response status:', response.status);
+                const data = await response.json();
+                log('[LOGIN] Response data:', { access: data.access?.substring(0, 50) + '...', refresh: data.refresh?.substring(0, 50) + '...' });
+
+                if (!response.ok) {
+                    throw new Error(JSON.stringify(data));
+                }
+
+                localStorage.setItem('access_token', data.access);
+                localStorage.setItem('refresh_token', data.refresh);
+
+                document.getElementById('loginSuccess').textContent = `✅ Login successful! Access token saved.`;
+                document.getElementById('loginSuccess').style.display = 'block';
+                document.getElementById('loginOutput').textContent = `✅ LOGGED IN\nEmail: ${email}\n\nTokens saved to localStorage\nAccess Token: ${data.access.substring(0, 50)}...\nRefresh Token: ${data.refresh.substring(0, 50)}...`;
+
+                // Fetch profile
+                setTimeout(() => getProfile(), 500);
+
+            } catch (error) {
+                log('[LOGIN] Error:', error.message);
+                document.getElementById('loginError').textContent = `❌ ${error.message}`;
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('loginOutput').textContent = `❌ ERROR\n${error.message}`;
+            }
+        }
+
+        async function getProfile() {
+            const token = localStorage.getItem('access_token');
+
+            document.getElementById('profileError').style.display = 'none';
+            document.getElementById('profileSuccess').style.display = 'none';
+            document.getElementById('profileOutput').style.display = 'block';
+            document.getElementById('profileOutput').textContent = 'Fetching profile...';
+
+            log('[PROFILE] Fetching with token:', token?.substring(0, 50) + '...');
+
+            try {
+                if (!token) {
+                    throw new Error('No access token found. Please login first.');
+                }
+
+                const response = await fetch(`${API_BASE}/auth/profile/`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                });
+
+                log('[PROFILE] Response status:', response.status);
+                const data = await response.json();
+                log('[PROFILE] Response data:', data);
+
+                if (!response.ok) {
+                    throw new Error(JSON.stringify(data));
+                }
+
+                localStorage.setItem('user', JSON.stringify(data));
+
+                document.getElementById('profileSuccess').textContent = `✅ Profile loaded! User: ${data.email}`;
+                document.getElementById('profileSuccess').style.display = 'block';
+                document.getElementById('profileOutput').textContent = `✅ PROFILE\n${JSON.stringify(data, null, 2)}`;
+
+            } catch (error) {
+                log('[PROFILE] Error:', error.message);
+                document.getElementById('profileError').textContent = `❌ ${error.message}`;
+                document.getElementById('profileError').style.display = 'block';
+                document.getElementById('profileOutput').textContent = `❌ ERROR\n${error.message}`;
+            }
+        }
+
+        function showStoredData() {
+            const user = localStorage.getItem('user');
+            const accessToken = localStorage.getItem('access_token');
+            const refreshToken = localStorage.getItem('refresh_token');
+
+            let output = '=== LocalStorage Content ===\n\n';
+            output += `user: ${user ? JSON.stringify(JSON.parse(user), null, 2) : 'NOT SET'}\n\n`;
+            output += `access_token: ${accessToken ? accessToken.substring(0, 50) + '...' : 'NOT SET'}\n\n`;
+            output += `refresh_token: ${refreshToken ? refreshToken.substring(0, 50) + '...' : 'NOT SET'}\n`;
+
+            const el = document.getElementById('storedData');
+            el.textContent = output;
+            el.style.display = 'block';
+        }
+
+        function clearLocalStorage() {
+            if (confirm('Are you sure you want to clear all stored data?')) {
+                localStorage.clear();
+                alert('✅ Cleared localStorage');
+                location.reload();
+            }
+        }
+
+        // Generate unique email on load
+        window.addEventListener('load', () => {
+            const timestamp = Date.now();
+            const uniqueEmail = `test_${timestamp}@example.com`;
+            document.getElementById('regEmail').value = uniqueEmail;
+            updateEmailHint();
+        });
+
+        // Expose functions to console for manual testing
+        window.testAuth = { register, login, getProfile, showStoredData, clearLocalStorage };
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+This folder contains React source files. Replace stubbed components with real logic and API calls as backend becomes available.
