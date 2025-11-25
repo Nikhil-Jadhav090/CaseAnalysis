@@ -9,10 +9,12 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-in-production')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+# Allow Vercel domains and localhost
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',') if os.getenv('ALLOWED_HOSTS') else ['*']
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if os.getenv('CSRF_TRUSTED_ORIGINS') else []
 
 # Application definition
 INSTALLED_APPS = [
@@ -36,6 +38,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # For static files on Vercel
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -119,8 +122,11 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
-MEDIA_URL = 'media/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles_build' / 'static'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
@@ -151,20 +157,11 @@ SIMPLE_JWT = {
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:5173",  # Vite default port
-        "http://localhost:5174",  # Vite fallback port
-        "http://localhost:5175",  # Vite fallback port
-        "http://localhost:5176",  # Vite fallback port
-        "http://localhost:5177",  # Vite fallback port
-        "http://localhost:5178",  # Vite fallback port
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5174",
-        "http://127.0.0.1:5175",
-        "http://127.0.0.1:5176",
-        "http://127.0.0.1:5177",
-        "http://127.0.0.1:5178",
-    ]
+    # Production: Allow your Vercel frontend
+    cors_origins = os.getenv('CORS_ALLOWED_ORIGINS', 'https://case-analysis.vercel.app').split(',')
+    CORS_ALLOWED_ORIGINS = cors_origins
+    
+CORS_ALLOW_CREDENTIALS = True
 
 # Gemini API settings
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { API_ENDPOINTS } from '../config';
 
 const AuthContext = createContext(null);
 
@@ -19,7 +20,7 @@ export function AuthProvider({ children }) {
     setLoading(true);
     try {
       console.log('[AUTH] Login attempt:', { email });
-      const res = await fetch('http://127.0.0.1:8000/api/auth/login/', {
+      const res = await fetch(API_ENDPOINTS.login, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -36,7 +37,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem('refresh_token', data.refresh);
 
       // Fetch profile
-      const prof = await fetch('http://127.0.0.1:8000/api/auth/profile/', {
+      const prof = await fetch(API_ENDPOINTS.profile, {
         headers: { Authorization: `Bearer ${data.access}` },
       });
       const userData = prof.ok ? await prof.json() : { email };
@@ -69,7 +70,7 @@ export function AuthProvider({ children }) {
       console.log('[AUTH] Registration attempt:', { email, first_name, last_name });
       console.log('[AUTH] Full payload:', payload);
       
-      const res = await fetch('http://127.0.0.1:8000/api/auth/register/', {
+      const res = await fetch(API_ENDPOINTS.register, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
