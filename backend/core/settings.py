@@ -157,11 +157,27 @@ SIMPLE_JWT = {
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
-    # Production: Allow your Vercel frontend
+    # Production: Allow your Vercel frontend and preview deployments
     cors_origins = os.getenv('CORS_ALLOWED_ORIGINS', 'https://case-analysis.vercel.app').split(',')
     CORS_ALLOWED_ORIGINS = cors_origins
+
+# Allow all Vercel preview URLs
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://case-analysis.*\.vercel\.app$",
+]
     
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # Gemini API settings
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
