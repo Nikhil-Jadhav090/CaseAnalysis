@@ -1,0 +1,219 @@
+@startuml CaseAnalysisUseCaseDiagram
+
+' Configuration
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam backgroundColor #FEFEFE
+skinparam actorBorderColor #a855f7
+skinparam usecaseBorderColor #ec4899
+skinparam rectangleBorderColor #666666
+skinparam arrowColor #333333
+
+' Title
+title Case Analysis System - Use Case Diagram
+
+' Actors
+actor "User\n(Investigator)" as User #LightBlue
+actor "Admin\n(Supervisor)" as Admin #LightCoral
+actor "AI System\n(Gemini)" as AI #LightGreen
+actor "System" as System #LightGray
+
+' Main System Boundary
+rectangle "Case Analysis Platform" {
+  
+  ' ========== Authentication & User Management ==========
+  package "Authentication & User Management" #LightYellow {
+    usecase "Register Account" as UC1
+    usecase "Login to System" as UC2
+    usecase "Logout" as UC3
+    usecase "View Profile" as UC4
+    usecase "Update Profile" as UC5
+  }
+  
+  ' ========== Case Management ==========
+  package "Case Management" #LightCyan {
+    usecase "Create New Case" as UC6
+    usecase "View Case List" as UC7
+    usecase "View Case Details" as UC8
+    usecase "Update Case Info" as UC9
+    usecase "Delete Case" as UC10
+    usecase "Search Cases" as UC11
+    usecase "Filter Cases" as UC12
+    usecase "Close Case" as UC13
+  }
+  
+  ' ========== Document Management ==========
+  package "Document Management" #Lavender {
+    usecase "Upload Documents" as UC14
+    usecase "View Documents" as UC15
+    usecase "Download Documents" as UC16
+    usecase "Delete Documents" as UC17
+  }
+  
+  ' ========== AI Analysis ==========
+  package "AI-Powered Analysis" #LightGreen {
+    usecase "Analyze Case with AI" as UC18
+    usecase "View AI Analysis Report" as UC19
+    usecase "Generate Recommendations" as UC20
+    usecase "Evaluate Evidence" as UC21
+    usecase "Identify Legal Precedents" as UC22
+  }
+  
+  ' ========== Chat Assistant ==========
+  package "AI Chat Assistant" #MistyRose {
+    usecase "Create Chat Session" as UC23
+    usecase "Send Message" as UC24
+    usecase "Receive AI Response" as UC25
+    usecase "View Chat History" as UC26
+    usecase "Link Chat to Case" as UC27
+  }
+  
+  ' ========== Case Collaboration ==========
+  package "Collaboration & Comments" #Wheat {
+    usecase "Add Case Comment" as UC28
+    usecase "View Comments" as UC29
+    usecase "Assign Case to User" as UC30
+    usecase "Update Case Status" as UC31
+  }
+  
+  ' ========== Admin Functions ==========
+  package "Administration" #LightSalmon {
+    usecase "Manage Users" as UC32
+    usecase "View All Cases" as UC33
+    usecase "Generate Reports" as UC34
+    usecase "View System Statistics" as UC35
+    usecase "Configure System Settings" as UC36
+  }
+  
+  ' ========== Reporting & Export ==========
+  package "Reporting & Export" #PaleGreen {
+    usecase "Export Case to PDF" as UC37
+    usecase "Generate Case Summary" as UC38
+    usecase "Print Case Report" as UC39
+    usecase "Download Analysis Report" as UC40
+  }
+}
+
+' ========== User Relationships ==========
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+
+User --> UC6
+User --> UC7
+User --> UC8
+User --> UC9
+User --> UC10
+User --> UC11
+User --> UC12
+User --> UC13
+
+User --> UC14
+User --> UC15
+User --> UC16
+User --> UC17
+
+User --> UC18
+User --> UC19
+User --> UC20
+
+User --> UC23
+User --> UC24
+User --> UC26
+User --> UC27
+
+User --> UC28
+User --> UC29
+User --> UC31
+
+User --> UC37
+User --> UC38
+User --> UC39
+User --> UC40
+
+' ========== Admin Relationships ==========
+Admin --> UC32
+Admin --> UC33
+Admin --> UC34
+Admin --> UC35
+Admin --> UC36
+Admin --> UC30
+
+' Admin inherits all User capabilities
+Admin --|> User
+
+' ========== AI System Relationships ==========
+AI --> UC18 : <<executes>>
+AI --> UC19 : <<generates>>
+AI --> UC20 : <<generates>>
+AI --> UC21 : <<performs>>
+AI --> UC22 : <<identifies>>
+AI --> UC25 : <<provides>>
+
+' ========== System Relationships ==========
+System --> UC2 : <<validates>>
+System --> UC6 : <<creates>>
+System --> UC14 : <<stores>>
+System --> UC37 : <<generates>>
+System --> UC38 : <<generates>>
+
+' ========== Include Relationships ==========
+UC18 ..> UC19 : <<include>>
+UC18 ..> UC20 : <<include>>
+UC18 ..> UC21 : <<include>>
+
+UC6 ..> UC2 : <<include>>
+UC7 ..> UC2 : <<include>>
+UC8 ..> UC2 : <<include>>
+
+UC24 ..> UC25 : <<include>>
+UC23 ..> UC2 : <<include>>
+
+UC32 ..> UC2 : <<include>>
+UC33 ..> UC2 : <<include>>
+
+' ========== Extend Relationships ==========
+UC22 ..> UC18 : <<extend>>
+UC30 ..> UC9 : <<extend>>
+UC27 ..> UC23 : <<extend>>
+UC40 ..> UC19 : <<extend>>
+
+' Notes
+note right of AI
+  Google Gemini AI
+  - Natural Language Processing
+  - Case Analysis
+  - Evidence Evaluation
+  - Legal Recommendations
+end note
+
+note right of UC18
+  AI Analysis includes:
+  - Summary generation
+  - Confidence scoring
+  - Category classification
+  - Evidence priority
+  - Recommended actions
+end note
+
+note bottom of UC6
+  Case creation captures:
+  - Title & Description
+  - Priority & Category
+  - Location & Date
+  - Parties Involved
+  - Initial Evidence
+end note
+
+note left of UC32
+  Admin privileges:
+  - User management
+  - System-wide access
+  - Report generation
+  - Configuration control
+end note
+
+@enduml
