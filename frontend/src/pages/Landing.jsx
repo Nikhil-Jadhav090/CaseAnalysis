@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Sparkles, Shield, TrendingUp, Zap, ArrowRight, CheckCircle } from 'lucide-react'
+import { Sparkles, Shield, TrendingUp, Zap, ArrowRight, CheckCircle, FileText, Users, BarChart3, Lock, Globe, Brain } from 'lucide-react'
 
 export default function Landing(){
   const [particles, setParticles] = useState([])
@@ -65,39 +65,179 @@ export default function Landing(){
           </section>
 
           <section className="animate-slide-in" style={{animationDelay: '0.4s'}}>
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 animate-pulse" />
-              <div className="relative backdrop-blur-2xl bg-white/10 p-8 rounded-3xl border border-white/20 overflow-hidden">
-                <div className="absolute inset-0 shimmer pointer-events-none" />
-                <div className="absolute -right-20 -top-20 w-40 h-40 bg-purple-500 rounded-full blur-3xl opacity-30 animate-pulse" />
-                <div className="absolute -left-20 -bottom-20 w-40 h-40 bg-pink-500 rounded-full blur-3xl opacity-30 animate-pulse" />
+            <div className="relative">
+              {/* Floating decorative elements */}
+              <div className="absolute -top-10 -left-10 w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full opacity-20 blur-2xl animate-pulse" />
+              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full opacity-20 blur-2xl" style={{animation: 'float-slow 8s ease-in-out infinite'}} />
+              
+              {/* Main illustration card */}
+              <div className="relative backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-10 rounded-3xl border border-white/20 overflow-hidden shadow-2xl">
+                {/* Background pattern */}
+                <div className="absolute inset-0 opacity-10">
+                  <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                      <circle cx="20" cy="20" r="1" fill="white"/>
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#grid)"/>
+                  </svg>
+                </div>
                 
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center animate-pulse-glow">
-                      <Sparkles className="w-6 h-6 text-white" />
+                {/* Animated illustration */}
+                <div className="relative z-10 space-y-6">
+                  {/* Header with icon */}
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50 animate-pulse" />
+                      <div className="relative w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                        <Brain className="w-8 h-8 text-white" />
+                      </div>
                     </div>
-                    <h3 className="text-2xl font-bold text-white">Live Demo</h3>
+                    <div>
+                      <h3 className="text-3xl font-black text-white">AI Dashboard</h3>
+                      <p className="text-purple-200">Powered by Google Gemini</p>
+                    </div>
                   </div>
-                  <p className="text-purple-100 mb-6 leading-relaxed">Create a case, upload evidence, and see an AI-generated summary and suggested category in real-time.</p>
                   
-                  <div className="space-y-3 mb-8">
-                    {['Auto-categorization', 'Sentiment analysis', 'Smart recommendations'].map((feature, i) => (
-                      <div key={i} className="flex items-center gap-3 text-purple-100">
-                        <CheckCircle className="w-5 h-5 text-green-400" />
-                        <span>{feature}</span>
+                  {/* Feature cards grid */}
+                  <div className="grid grid-cols-2 gap-4">
+                    {[
+                      {icon: FileText, label: 'Case Analysis', color: 'from-blue-500 to-cyan-500', stat: '1.2k+'},
+                      {icon: Users, label: 'Active Users', color: 'from-green-500 to-emerald-500', stat: '500+'},
+                      {icon: BarChart3, label: 'Reports', color: 'from-orange-500 to-red-500', stat: '3.5k+'},
+                      {icon: Lock, label: 'Secure', color: 'from-purple-500 to-pink-500', stat: '100%'}
+                    ].map((item, i) => (
+                      <div key={i} className="group relative p-6 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1" style={{animationDelay: `${0.5 + i*0.1}s`, animation: 'slide-in-up 0.6s ease-out forwards'}}>
+                        <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300`} />
+                        <div className="relative">
+                          <div className={`w-12 h-12 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center mb-3 shadow-lg`}>
+                            <item.icon className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="text-3xl font-black text-white mb-1">{item.stat}</div>
+                          <div className="text-sm text-purple-200">{item.label}</div>
+                        </div>
                       </div>
                     ))}
                   </div>
                   
-                  <div className="flex gap-3">
-                    <Link to="/cases/new" className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 transform hover:scale-105 text-center">Create a case</Link>
-                    <Link to="/cases" className="flex-1 px-6 py-3 border border-white/30 text-white rounded-xl font-semibold hover:bg-white/10 transition-all duration-300 text-center">Browse cases</Link>
+                  {/* Feature list */}
+                  <div className="space-y-3 pt-4">
+                    {[
+                      {text: '7-Step Case Creation Wizard', color: 'text-blue-300'},
+                      {text: 'Real-time AI Analysis', color: 'text-green-300'},
+                      {text: 'PDF Report Generation', color: 'text-yellow-300'},
+                      {text: 'Secure Document Storage', color: 'text-purple-300'}
+                    ].map((feature, i) => (
+                      <div key={i} className="flex items-center gap-3 group hover:translate-x-2 transition-transform duration-300">
+                        <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                          <CheckCircle className="w-4 h-4 text-white" />
+                        </div>
+                        <span className={`font-medium ${feature.color}`}>{feature.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* CTA buttons */}
+                  <div className="flex gap-3 pt-6">
+                    <Link to="/cases/new" className="group flex-1 px-6 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white rounded-xl font-bold hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 transform hover:scale-105 text-center flex items-center justify-center gap-2">
+                      <FileText className="w-5 h-5" />
+                      Create Case
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                    <Link to="/cases" className="flex-1 px-6 py-4 backdrop-blur-xl bg-white/10 border-2 border-white/30 text-white rounded-xl font-bold hover:bg-white/20 transition-all duration-300 text-center hover:scale-105 transform">View All</Link>
                   </div>
                 </div>
+                
+                {/* Decorative glow effects */}
+                <div className="absolute -top-20 -right-20 w-64 h-64 bg-purple-500 rounded-full blur-3xl opacity-20 animate-pulse" />
+                <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-pink-500 rounded-full blur-3xl opacity-20" style={{animation: 'pulse-glow 3s ease-in-out infinite'}} />
               </div>
             </div>
           </section>
+        </div>
+        
+        {/* Features Section with Graphics */}
+        <div className="mt-32 animate-slide-in" style={{animationDelay: '0.8s'}}>
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-black text-white mb-4">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Everything you need</span>
+            </h2>
+            <p className="text-xl text-purple-200">Powerful features for modern case management</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Brain,
+                title: 'AI-Powered Analysis',
+                desc: 'Get comprehensive legal analysis with 7 detailed sections including justice pathway, police action, FIR guidance, and compensation info.',
+                gradient: 'from-purple-500 to-pink-500',
+                illustration: (
+                  <div className="relative h-48 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl" />
+                    <div className="relative">
+                      <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-2xl animate-pulse">
+                        <Brain className="w-16 h-16 text-white" />
+                      </div>
+                      <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                        <Sparkles className="w-8 h-8 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                )
+              },
+              {
+                icon: Shield,
+                title: 'Secure & Compliant',
+                desc: 'Role-based access control, JWT authentication, and encrypted data storage ensure your cases are protected and compliant.',
+                gradient: 'from-blue-500 to-cyan-500',
+                illustration: (
+                  <div className="relative h-48 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-2xl blur-xl" />
+                    <div className="relative grid grid-cols-2 gap-4">
+                      {[Lock, Shield, Users, Globe].map((Icon, i) => (
+                        <div key={i} className={`w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg`} style={{animation: `float ${2 + i*0.5}s ease-in-out infinite ${i*0.2}s`}}>
+                          <Icon className="w-8 h-8 text-white" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              },
+              {
+                icon: BarChart3,
+                title: 'Smart Analytics',
+                desc: 'Track case progress, analyze trends, and generate comprehensive PDF reports with beautiful visualizations.',
+                gradient: 'from-green-500 to-emerald-500',
+                illustration: (
+                  <div className="relative h-48 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-2xl blur-xl" />
+                    <div className="relative flex gap-2 items-end">
+                      {[40, 70, 50, 90, 60].map((height, i) => (
+                        <div key={i} className={`w-8 bg-gradient-to-t from-green-500 to-emerald-500 rounded-t-lg shadow-lg`} style={{height: `${height}%`, animation: `slide-in-up ${0.5 + i*0.1}s ease-out ${i*0.1}s both`}} />
+                      ))}
+                    </div>
+                  </div>
+                )
+              }
+            ].map((feature, i) => (
+              <div key={i} className="group relative p-8 backdrop-blur-2xl bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2" style={{animationDelay: `${0.9 + i*0.1}s`, animation: 'slide-in-up 0.8s ease-out forwards'}}>
+                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 rounded-3xl transition-opacity duration-500`} />
+                
+                {/* Illustration */}
+                <div className="mb-6">
+                  {feature.illustration}
+                </div>
+                
+                {/* Content */}
+                <div className={`w-14 h-14 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <feature.icon className="w-7 h-7 text-white" />
+                </div>
+                
+                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">{feature.title}</h3>
+                <p className="text-purple-200 leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
         
         <div className="mt-24 text-center animate-slide-in" style={{animationDelay: '0.6s'}}>
