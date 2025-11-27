@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Logo from './Logo';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -15,11 +16,8 @@ export default function Navbar() {
   return (
     <header className="bg-black sticky top-0 z-30 border-b border-gray-800 shadow-lg">
       <div className="container mx-auto px-6 flex items-center justify-between h-16">
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg hover:shadow-purple-500/50 transition-all duration-300">
-            CA
-          </div>
-          <span className="font-bold text-lg text-white group-hover:text-purple-400 transition-colors">Case Analysis</span>
+        <Link to="/" className="flex items-center">
+          <Logo size="default" />
         </Link>
 
         <nav className="flex items-center gap-6">
