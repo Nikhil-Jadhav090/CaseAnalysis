@@ -13,11 +13,10 @@ skinparam arrowColor #333333
 ' Title
 title Case Analysis System - Use Case Diagram
 
-' Actors
+' Left Side Actors
+left to right direction
 actor "User\n(Investigator)" as User #LightBlue
 actor "Admin\n(Supervisor)" as Admin #LightCoral
-actor "AI System\n(Gemini)" as AI #LightGreen
-actor "System" as System #LightGray
 
 ' Main System Boundary
 rectangle "Case Analysis Platform" {
@@ -95,6 +94,10 @@ rectangle "Case Analysis Platform" {
   }
 }
 
+' Right Side Actors
+actor "AI System\n(Gemini)" as AI #LightGreen
+actor "System" as System #LightGray
+
 ' ========== User Relationships ==========
 User --> UC1
 User --> UC2
@@ -145,20 +148,20 @@ Admin --> UC30
 ' Admin inherits all User capabilities
 Admin --|> User
 
-' ========== AI System Relationships ==========
-AI --> UC18 : <<executes>>
-AI --> UC19 : <<generates>>
-AI --> UC20 : <<generates>>
-AI --> UC21 : <<performs>>
-AI --> UC22 : <<identifies>>
-AI --> UC25 : <<provides>>
+' ========== AI System Relationships (Right Side) ==========
+UC18 <-- AI : <<executes>>
+UC19 <-- AI : <<generates>>
+UC20 <-- AI : <<generates>>
+UC21 <-- AI : <<performs>>
+UC22 <-- AI : <<identifies>>
+UC25 <-- AI : <<provides>>
 
-' ========== System Relationships ==========
-System --> UC2 : <<validates>>
-System --> UC6 : <<creates>>
-System --> UC14 : <<stores>>
-System --> UC37 : <<generates>>
-System --> UC38 : <<generates>>
+' ========== System Relationships (Right Side) ==========
+UC2 <-- System : <<validates>>
+UC6 <-- System : <<creates>>
+UC14 <-- System : <<stores>>
+UC37 <-- System : <<generates>>
+UC38 <-- System : <<generates>>
 
 ' ========== Include Relationships ==========
 UC18 ..> UC19 : <<include>>
